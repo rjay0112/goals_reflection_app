@@ -14,7 +14,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   Color selectedColor = Colors.black;
   Color pickerColor = Colors.black;
-  double strokeWidth = 3.0;
+  double strokeWidth = 2.0;
   List<DrawingPoints> points = List();
   bool showBottomList = false;
   double opacity = 1.0;
@@ -30,9 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
+      appBar: AppBar(
         title: Text(widget.title),
-      ),*/
+      ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         child: Column(
@@ -50,20 +50,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _goals(){
-    return Container(
-      height: MediaQuery.of(context).size.height*0.4,
-      color: Colors.green,
-
+    return Expanded(
+      child: Container(
+        color: Colors.green,
+      ),
     );
   }
 
   Widget _drawingArea(){
-    return GestureDetector(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height*0.5,
+      child:GestureDetector(
         onPanUpdate: (details) {
           setState(() {
             RenderBox renderBox = context.findRenderObject();
             points.add(DrawingPoints(
-                points: renderBox.globalToLocal(details.globalPosition),
+                points: details.localPosition,//renderBox.globalToLocal(details.globalPosition),
                 paint: Paint()
                   //..strokeCap = strokeCap
                   ..isAntiAlias = true
@@ -75,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             RenderBox renderBox = context.findRenderObject();
             points.add(DrawingPoints(
-                points: renderBox.globalToLocal(details.globalPosition),
+                points: details.localPosition,//renderBox.globalToLocal(details.globalPosition),
                 paint: Paint()
                   //..strokeCap = strokeCap
                   ..isAntiAlias = true
@@ -90,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: ClipRect(
           child:CustomPaint(
-          size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height*0.2),//Size.infinite,
+         // size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height*0.2),//Size.infinite,
           child: Container(
             //color: Colors.orange,
             width: MediaQuery.of(context).size.width,
@@ -100,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             pointsList: points,
           ),
         ),
+      ),
       ),
     );
   }
@@ -113,6 +117,9 @@ class DrawingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (int i = 0; i < pointsList.length - 1; i++) {
+      //print(pointsList[i]?.points);
+      //print(pointsList[i]?.points?.dx);
+      //print("yoffset${pointsList[i]?.points?.dy}");
       if (pointsList[i] != null && pointsList[i + 1] != null) {
         canvas.drawLine(pointsList[i].points, pointsList[i + 1].points,
             pointsList[i].paint);
