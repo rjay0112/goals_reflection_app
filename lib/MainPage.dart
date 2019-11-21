@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'DateKeep.dart';
+import 'Task.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -12,26 +14,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //Writing variables
   Color selectedColor = Colors.black;
-  Color pickerColor = Colors.black;
-  double strokeWidth = 2.0;
-  List<DrawingPoints> points = List();
-  bool showBottomList = false;
+  double strokeWidth = 1.5;
   double opacity = 1.0;
-  SelectedMode selectedMode = SelectedMode.StrokeWidth;
-  List<Color> colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.amber,
-    Colors.black
-  ];
+  GoalDate curDate=GoalDate(new DateTime.now());
+  List<GoalDate> twoWeeks=[];
+
+  List<DrawingPoints> points = List();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(curDate.titleDate(), textAlign: TextAlign.center,),
+      ),
+      drawer: Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text("Home"),
+            Text("Calendar View"),
+            Text("Rewards"),
+            Text("Settings"),
+        ],),
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -51,9 +57,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _goals(){
     return Expanded(
-      child: Container(
-        color: Colors.green,
-      ),
+      child: ListView.builder(
+          itemCount: curDate.getTasks().length,
+          itemBuilder: (BuildContext context, int index){
+            List<Task> tasks =curDate.getTasks();
+            return Container(
+              height: MediaQuery.of(context).size.height*0.1,
+              color: tasks[index].getBackColor(),
+              child:Text("${tasks[index].getTaskType()}"),
+            );
+          },
+        )
     );
   }
 
@@ -68,9 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
             points.add(DrawingPoints(
                 points: details.localPosition,//renderBox.globalToLocal(details.globalPosition),
                 paint: Paint()
-                  //..strokeCap = strokeCap
                   ..isAntiAlias = true
-                  ..color = selectedColor.withOpacity(opacity)
+                  ..color = selectedColor
                   ..strokeWidth = strokeWidth));
           });
         },
@@ -80,9 +93,8 @@ class _MyHomePageState extends State<MyHomePage> {
             points.add(DrawingPoints(
                 points: details.localPosition,//renderBox.globalToLocal(details.globalPosition),
                 paint: Paint()
-                  //..strokeCap = strokeCap
                   ..isAntiAlias = true
-                  ..color = selectedColor.withOpacity(opacity)
+                  ..color = selectedColor
                   ..strokeWidth = strokeWidth));
           });
         },
@@ -93,17 +105,16 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         child: ClipRect(
           child:CustomPaint(
-         // size: Size(MediaQuery.of(context).size.width,MediaQuery.of(context).size.height*0.2),//Size.infinite,
-          child: Container(
-            //color: Colors.orange,
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height*0.5,
-          ),
-          painter: DrawingPainter(
-            pointsList: points,
+            child: Container(
+              //color: Colors.orange,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height*0.5,
+            ),
+            painter: DrawingPainter(
+              pointsList: points,
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -117,9 +128,7 @@ class DrawingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     for (int i = 0; i < pointsList.length - 1; i++) {
-      //print(pointsList[i]?.points);
-      //print(pointsList[i]?.points?.dx);
-      //print("yoffset${pointsList[i]?.points?.dy}");
+      print(pointsList.length);
       if (pointsList[i] != null && pointsList[i + 1] != null) {
         canvas.drawLine(pointsList[i].points, pointsList[i + 1].points,
             pointsList[i].paint);
