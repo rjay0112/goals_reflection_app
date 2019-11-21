@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'DateKeep.dart';
 import 'Task.dart';
+import 'package:expandable/expandable.dart';
 
 
 class MyHomePage extends StatefulWidget {
@@ -16,7 +17,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //Writing variables
   Color selectedColor = Colors.black;
-  double strokeWidth = 1.5;
+  double strokeWidth = 1.5; 
   double opacity = 1.0;
   GoalDate curDate=GoalDate(new DateTime.now());
   List<GoalDate> twoWeeks=[];
@@ -25,6 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    //print("My Whole screen is being build.");
     return Scaffold(
       appBar: AppBar(
         title: Text(curDate.titleDate(), textAlign: TextAlign.center,),
@@ -40,39 +42,62 @@ class _MyHomePageState extends State<MyHomePage> {
         ],),
       ),
       body: Container(
+        padding: EdgeInsets.all(5.0),
         height: MediaQuery.of(context).size.height,
         child: Column(
           children: <Widget>[
             _goals(),
-            _drawingArea(),
+            Container(
+              padding: EdgeInsets.only(top:10.0),
+              decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              //color:,
+              ),
+              child:ExpandablePanel(
+                header: _collapsedWriting(),
+                //collapsed: Text("area to actually write"),
+                expanded: _drawingArea(),
+                tapHeaderToExpand: true,
+              )
+            )
+            //_drawingArea(),
           ],
         )
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ), 
+      ),*/ 
+    );
+  }
+
+  Widget _collapsedWriting(){
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("Written Review"),
+        Icon(Icons.create),
+      ],
     );
   }
 
   Widget _goals(){
     return Expanded(
-      child: ListView.builder(
+      child: ListView.separated(
+        //padding: EdgeInsets.all(5.0),
           itemCount: curDate.getTasks().length,
           itemBuilder: (BuildContext context, int index){
             List<Task> tasks =curDate.getTasks();
-            return Container(
-              height: MediaQuery.of(context).size.height*0.1,
-              color: tasks[index].getBackColor(),
-              child:Text("${tasks[index].getTaskType()}"),
-            );
+            return tasks[index].buildMainpagelayout(context);
           },
+          separatorBuilder: (BuildContext context, int index) => const Divider(),
         )
     );
   }
 
   Widget _drawingArea(){
     return Container(
+      color: Colors.grey[100],
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height*0.5,
       child:GestureDetector(

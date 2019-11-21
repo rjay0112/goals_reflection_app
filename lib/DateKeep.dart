@@ -8,12 +8,15 @@ class GoalDate{
   List<Task> _todayTasks=[];
   DateTime _currentDate;
   GoalDate(DateTime curDate){
-  _todayTasks.add(new Task(Colors.red,"Binary"));
-  _todayTasks.add(new Task(Colors.green,"Binary"));
-  _todayTasks.add(new Task(Colors.blue,"Binary"));
-  _todayTasks.add(new Task(Colors.red,"Binary"));
-  _todayTasks.add(new Task(Colors.green,"Binary"));
-  _todayTasks.add(new Task(Colors.blue,"Binary"));
+  _todayTasks.add(new Task("binary","Complete Mobile Lab"));
+  _todayTasks.add(new Task("time","Spend 30 minutes reading"));
+  _todayTasks.add(new Task("progress","Review 20 Astronomy Slides"));
+  _todayTasks.add(new Task("binary","Complete Mobile Lab"));
+  _todayTasks.add(new Task("time","Spend 30 minutes reading"));
+  _todayTasks.add(new Task("progress","Review 20 Astronomy Slides"));
+  _todayTasks.add(new Task("none","Do nothing"));
+  _todayTasks.add(new Task("progress","Review 2 lectures"));
+
 
   _currentDate=curDate;
   }

@@ -1,0 +1,4 @@
+#Thu Nov 21 15:58:57 EST 2019
+base.0=C\:\\Users\\RyanJ\\Documents\\Mine\\goals_reflection_app\\build\\app\\intermediates\\transforms\\dexMerger\\debug\\0
+path.0=classes.dex
+renamed.0=classes.dex
