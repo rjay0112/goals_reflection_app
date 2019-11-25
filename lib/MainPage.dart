@@ -47,6 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           children: <Widget>[
             _goals(),
+            _twoWeekCalendar(),
             Container(
               padding: EdgeInsets.only(top:10.0),
               decoration: BoxDecoration(
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 expanded: _drawingArea(),
                 tapHeaderToExpand: true,
               )
-            )
+            ),
             //_drawingArea(),
           ],
         )
@@ -68,6 +69,25 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ),*/ 
+    );
+  }
+
+  Widget _twoWeekCalendar(){
+    return Container(
+      height: MediaQuery.of(context).size.height*0.1,
+      child: GridView.count(
+      crossAxisCount: 7,
+      children: <Widget>[
+        Text("M"),
+        Text("T"),
+        Text("W"),
+        Text("Th"),
+        Text("F"),
+        Text("Sa"),
+        Text("Su"),
+        Text("M"),
+      ],
+      )
     );
   }
 
@@ -83,6 +103,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _goals(){
     return Expanded(
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 5.0),
       child: ListView.separated(
         //padding: EdgeInsets.all(5.0),
           itemCount: curDate.getTasks().length,
@@ -92,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
           separatorBuilder: (BuildContext context, int index) => const Divider(),
         )
+      )
     );
   }
 
@@ -99,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Container(
       color: Colors.grey[100],
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height*0.5,
+      height: MediaQuery.of(context).size.height*0.4,
       child:GestureDetector(
         onPanUpdate: (details) {
           setState(() {
