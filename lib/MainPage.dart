@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'DateKeep.dart';
-import 'Task.dart';
+import 'model/Task.dart';
 import 'package:expandable/expandable.dart';
 import 'WritingPad.dart';
 
@@ -99,12 +99,32 @@ class _MyHomePageState extends State<MyHomePage> {
           itemCount: curDate.getTasks().length,
           itemBuilder: (BuildContext context, int index){
             List<Task> tasks =curDate.getTasks();
-            return tasks[index].buildMainpagelayout(context);
+            return buildLargeGoalLayout(context,tasks[index]);
           },
           separatorBuilder: (BuildContext context, int index) => const Divider(),
         )
       )
     );
+  }
+
+  Widget buildLargeGoalLayout(BuildContext context, Task task){
+    return Container(
+    decoration: BoxDecoration(
+      border: Border.all(color: Colors.black),
+      color: task.getBackColor(),
+    ),
+    padding: EdgeInsets.all(5.0),
+    height: MediaQuery.of(context).size.height*0.1,
+    child:Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text("${task.getTaskDesc()}"),
+                  Text("${task.getTaskType()}"),
+                  Text("${task.getTaskDate()}"),
+                  Text("${task.getProgress()}/${task.getGoal()}"),
+                ],
+              ),
+  );
   }
 
 
