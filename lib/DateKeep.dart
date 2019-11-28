@@ -7,9 +7,9 @@ class GoalDate{
   List<Task> _todayTasks=[];
   DateTime _currentDate;
   GoalDate(DateTime curDate){
-  _todayTasks.add(new Task("To run 5km","progression",dateToShortString(curDate),5.0));
-  _todayTasks.add(new Task("To make popcorn","binary",dateToShortString(curDate),1.0));
-  _todayTasks.add(new Task("To read 20 min","timed",dateToShortString(curDate),20.0));
+  _todayTasks.add(new Task(1,"To run 5km","progression",dateToShortString(curDate),5.0,"R1"));
+  _todayTasks.add(new Task(2,"To make popcorn","binary",dateToShortString(curDate),1.0,"R2"));
+  _todayTasks.add(new Task(3,"To read 20 min","timed",dateToShortString(curDate),20.0,"R3"));
   _currentDate=curDate;
   }
   void addTask(Task task){_todayTasks.add(task);}

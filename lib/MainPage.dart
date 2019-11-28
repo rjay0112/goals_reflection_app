@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'DateKeep.dart';
 import 'model/Task.dart';
+import 'model/TaskModel.dart';
 import 'package:expandable/expandable.dart';
 import 'WritingPad.dart';
 
@@ -19,6 +20,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   GoalDate curDate=GoalDate(new DateTime.now());
   List<GoalDate> twoWeeks=[];
+  final _model = TaskModel(); 
 
   @override
   Widget build(BuildContext context) {
@@ -45,27 +47,18 @@ class _MyHomePageState extends State<MyHomePage> {
             _goals(),
             _twoWeekCalendar(),
             WritingPad(),
-            /*Container(
-              padding: EdgeInsets.only(top:10.0),
-              decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              //color:,
-              ),
-              child:ExpandablePanel(
-                header: _collapsedWriting(),
-                //collapsed: Text("area to actually write"),
-                expanded: _drawingArea(),
-                tapHeaderToExpand: true,
-              )
-            ),*/
-            //_drawingArea(),
           ],
         )
       ),
-      /*floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         tooltip: 'Increment',
         child: Icon(Icons.add),
-      ),*/ 
+        onPressed: (){
+          _model.getAllTasks();
+          _model.insertTask(curDate.getTasks()[0]);
+          _model.getAllTasks();
+        },
+      ), 
     );
   }
 
